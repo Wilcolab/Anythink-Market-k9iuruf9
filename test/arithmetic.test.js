@@ -94,7 +94,64 @@ describe('Arithmetic', function () {
     });
 
 // TODO: Challenge #1
- 
+    describe('Power', function () {
+        it('raises a positive integer to a positive integer exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 32 });
+                    done();
+                });
+        });
+        it('raises a number to the zero exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=42&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('raises zero to a positive exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=0&operand2=5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('raises a positive number to a negative exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=-2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0.25 });
+                    done();
+                });
+        });
+        it('raises a negative base to an odd exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -8 });
+                    done();
+                });
+        });
+        it('supports exponential notation for exponent', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=1e1')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1024 });
+                    done();
+                });
+        });
+        it('supports fractional exponent (square root)', function (done) {
+            request.get('/arithmetic?operation=power&operand1=9&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 3 });
+                    done();
+                });
+        });
+    });
 
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
